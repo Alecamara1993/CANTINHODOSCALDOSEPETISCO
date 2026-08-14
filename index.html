@@ -110,6 +110,11 @@
     transition:background .18s ease, color .18s ease, border-color .18s ease;
   }
   .chip.active{ background:var(--wine); border-color:var(--wine-bright); color:var(--cream); }
+  .tab-icon{ display:inline-flex; width:15px; height:15px; flex-shrink:0; }
+  .tab-icon svg{ width:100%; height:100%; }
+  .cat-icon{ display:inline-flex; width:19px; height:19px; flex-shrink:0; color:var(--terra-bright); }
+  .cat-icon svg{ width:100%; height:100%; }
+  .cat-head h2{ display:flex; align-items:center; gap:9px; }
 
   .cat-section{ padding:32px 0 6px; scroll-margin-top:150px; }
   .cat-section.empty-cat{ display:none; }
@@ -461,10 +466,10 @@
   </div>
   <nav class="cat-nav">
     <div class="cat-scroll" id="catScroll">
-      <a class="chip active" data-cat="porcoes" href="#porcoes">🍟 Porções</a>
-      <a class="chip" data-cat="caldos" href="#caldos">🍲 Caldos</a>
-      <a class="chip" data-cat="bebidas" href="#bebidas">🥤 Bebidas</a>
-      <a class="chip" data-cat="combos" href="#combos">🎉 Combos</a>
+      <a class="chip active" data-cat="porcoes" href="#porcoes"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></span><span>Porções</span></a>
+      <a class="chip" data-cat="caldos" href="#caldos"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16l-1.3 6.2a3 3 0 01-3 2.4H8.3a3 3 0 01-3-2.4L4 12z"/><path d="M9 3c.8 1.6-1.2 2-1.2 3.6a1.6 1.6 0 003.2 0C11 5 9.8 4.6 10.4 3"/><path d="M14.5 3c.8 1.6-1.2 2-1.2 3.6a1.6 1.6 0 003.2 0c0-1.6-1.2-2-.6-3.6"/></svg></span><span>Caldos</span></a>
+      <a class="chip" data-cat="bebidas" href="#bebidas"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 3h10l-1.1 15.6A2.4 2.4 0 0113.5 21h-3a2.4 2.4 0 01-2.4-2.4L7 3z"/><line x1="6" y1="7.2" x2="18" y2="7.2"/></svg></span><span>Bebidas</span></a>
+      <a class="chip" data-cat="combos" href="#combos"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="8.5" width="17" height="12" rx="1.2"/><path d="M3.5 12.5h17"/><path d="M12 8.5v12"/><path d="M12 8.5c-1.8 0-3.4-1-3.4-2.6C8.6 4.4 9.6 3.3 11 3.3c1.4 0 2.5 1 2.8 2.3"/><path d="M12 8.5c1.8 0 3.4-1 3.4-2.6 0-1.5-1-2.6-2.4-2.6-1.4 0-2.5 1-2.8 2.3"/></svg></span><span>Combos</span></a>
     </div>
   </nav>
 </header>
@@ -715,11 +720,19 @@
     horaFecha: 23 * 60 + 30   // 23:30
   };
 
+  var ICONS = {
+    porcoes: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>',
+    caldos: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12h16l-1.3 6.2a3 3 0 01-3 2.4H8.3a3 3 0 01-3-2.4L4 12z"/><path d="M9 3c.8 1.6-1.2 2-1.2 3.6a1.6 1.6 0 003.2 0C11 5 9.8 4.6 10.4 3"/><path d="M14.5 3c.8 1.6-1.2 2-1.2 3.6a1.6 1.6 0 003.2 0c0-1.6-1.2-2-.6-3.6"/></svg>',
+    bebidas: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 3h10l-1.1 15.6A2.4 2.4 0 0113.5 21h-3a2.4 2.4 0 01-2.4-2.4L7 3z"/><line x1="6" y1="7.2" x2="18" y2="7.2"/></svg>',
+    combos: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="8.5" width="17" height="12" rx="1.2"/><path d="M3.5 12.5h17"/><path d="M12 8.5v12"/><path d="M12 8.5c-1.8 0-3.4-1-3.4-2.6C8.6 4.4 9.6 3.3 11 3.3c1.4 0 2.5 1 2.8 2.3"/><path d="M12 8.5c1.8 0 3.4-1 3.4-2.6 0-1.5-1-2.6-2.4-2.6-1.4 0-2.5 1-2.8 2.3"/></svg>',
+    todos: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="7" height="7" rx="1.1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.1"/></svg>'
+  };
+
   var CATEGORIAS = [
-    { id:'porcoes', label:'Porções', emoji:'🍟' },
-    { id:'caldos',  label:'Caldos',  emoji:'🍲' },
-    { id:'bebidas', label:'Bebidas', emoji:'🥤' },
-    { id:'combos',  label:'Combos',  emoji:'🎉' }
+    { id:'porcoes', label:'Porções', icon: ICONS.porcoes },
+    { id:'caldos',  label:'Caldos',  icon: ICONS.caldos },
+    { id:'bebidas', label:'Bebidas', icon: ICONS.bebidas },
+    { id:'combos',  label:'Combos',  icon: ICONS.combos }
   ];
 
   // ---------- COLE SUA CONFIG AQUI ----------
@@ -804,6 +817,7 @@
         if(query && p.nome.toLowerCase().indexOf(query) === -1) return false;
         return true;
       });
+      itensCat.sort(function(a, b){ return a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity:'base' }); });
       if(itensCat.length === 0) return;
       anyVisible = true;
 
@@ -813,7 +827,7 @@
 
       var head = document.createElement('div');
       head.className = 'cat-head';
-      head.innerHTML = '<h2>' + cat.emoji + ' ' + cat.label + '</h2><span class="cat-count mono">' + itensCat.length + (itensCat.length === 1 ? ' item' : ' itens') + '</span>';
+      head.innerHTML = '<h2><span class="cat-icon">' + cat.icon + '</span>' + cat.label + '</h2><span class="cat-count mono">' + itensCat.length + (itensCat.length === 1 ? ' item' : ' itens') + '</span>';
       section.appendChild(head);
 
       var list = document.createElement('div');
@@ -1354,9 +1368,9 @@
 
   function renderAdminTabs(){
     var tabs = document.getElementById('adminTabs');
-    var opts = [{ id:'todos', label:'Todos', emoji:'📋' }].concat(CATEGORIAS);
+    var opts = [{ id:'todos', label:'Todos', icon: ICONS.todos }].concat(CATEGORIAS);
     tabs.innerHTML = opts.map(function(c){
-      return '<div class="chip' + (c.id === adminCatFiltro ? ' active' : '') + '" data-admin-cat="' + c.id + '">' + c.emoji + ' ' + c.label + '</div>';
+      return '<div class="chip' + (c.id === adminCatFiltro ? ' active' : '') + '" data-admin-cat="' + c.id + '"><span class="tab-icon">' + c.icon + '</span>' + c.label + '</div>';
     }).join('');
     Array.prototype.forEach.call(tabs.querySelectorAll('.chip'), function(chip){
       chip.addEventListener('click', function(){
@@ -1369,7 +1383,8 @@
 
   function renderAdminList(){
     var wrap = document.getElementById('adminProdList');
-    var lista = adminCatFiltro === 'todos' ? produtos : produtos.filter(function(p){ return p.categoria === adminCatFiltro; });
+    var lista = adminCatFiltro === 'todos' ? produtos.slice() : produtos.filter(function(p){ return p.categoria === adminCatFiltro; });
+    lista.sort(function(a, b){ return a.nome.localeCompare(b.nome, 'pt-BR', { sensitivity:'base' }); });
 
     if(lista.length === 0){
       wrap.innerHTML = '<div class="admin-empty">Nenhum item cadastrado nessa categoria ainda.</div>';
@@ -1381,7 +1396,7 @@
       return '<div class="admin-prod-row" data-prod-id="' + p.id + '">' +
         '<div class="admin-prod-top">' +
           '<div><div class="admin-prod-name' + (p.ativo ? '' : ' inactive') + '">' + escapeHtml(p.nome) + '</div>' +
-          '<div class="admin-prod-meta">' + (catInfo ? catInfo.emoji + ' ' + catInfo.label : p.categoria) + (p.ativo ? '' : ' · inativo') + '</div></div>' +
+          '<div class="admin-prod-meta">' + (catInfo ? catInfo.label : p.categoria) + (p.ativo ? '' : ' · inativo') + '</div></div>' +
           '<div class="admin-prod-price">' + formatBRL(p.preco) + '</div>' +
         '</div>' +
         '<div class="admin-prod-actions">' +
@@ -1412,7 +1427,7 @@
   // ============================================================
   var pfCategoriaSelect = document.getElementById('pfCategoria');
   pfCategoriaSelect.innerHTML = CATEGORIAS.map(function(c){
-    return '<option value="' + c.id + '">' + c.emoji + ' ' + c.label + '</option>';
+    return '<option value="' + c.id + '">' + c.label + '</option>';
   }).join('');
 
   document.getElementById('adminNewProdBtn').addEventListener('click', function(){ abrirFormProduto(null); });
